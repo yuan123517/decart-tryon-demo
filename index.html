@@ -49,6 +49,9 @@ a{color:var(--accent)}
   cursor:pointer;transition:transform .08s ease,opacity .15s,background .15s;min-height:52px;
   display:inline-flex;align-items:center;justify-content:center;gap:8px;user-select:none;-webkit-tap-highlight-color:transparent}
 .btn:active{transform:scale(.98)}
+.stage video.mirror{transform:scaleX(-1)}
+.btn-mirror{display:inline-flex;align-items:center;gap:6px}
+.btn-mirror.on{background:rgba(124,92,255,.22);border-color:rgba(124,92,255,.7);color:#fff}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .btn-cam{background:linear-gradient(180deg,#3b82f6,#2563eb);color:#fff}
 .btn-cam.on{background:linear-gradient(180deg,#64748b,#475569)}
@@ -127,7 +130,7 @@ textarea{resize:vertical;min-height:64px;margin-top:8px}
         <label><input type="radio" name="mode" value="standard" checked><span>标准 $0.02/s</span></label>
         <label><input type="radio" name="mode" value="fast"><span>快速 $0.04/s</span></label>
       </div>
-      <button class="btn btn-ghost" id="flipBtn" type="button">切换前后摄</button>
+      <div class="row" style="gap:8px"><button class="btn btn-ghost btn-mirror" id="mirrorBtn" type="button" aria-pressed="true">⇋ 镜像</button><button class="btn btn-ghost" id="flipBtn" type="button">切换前后摄</button></div>
     </div>
     <p class="hint">切换模式会在换装进行时自动重连。闲置 60 秒或单次满 3 分钟会自动停止换装（摄像头可保持开启）。</p>
   </div>
@@ -305,6 +308,10 @@ const log=m=>{$("log").textContent=new Date().toLocaleTimeString()+" "+m+"\n"+$(
 
 let garment=SAMPLES[0].src;
 let rt=null, stream=null, facing="user";
+const LS_MIRROR="tryon_mirror_v1";
+function mirrorPrefs(){try{return JSON.parse(localStorage.getItem(LS_MIRROR)||"{}")}catch(e){return {}}}
+function isMirrored(){const p=mirrorPrefs();return typeof p[facing]==="boolean"?p[facing]:facing==="user";}
+function applyMirror(){const m=isMirrored();["cam","out"].forEach(id=>{const v=document.getElementById(id);if(v)v.classList.toggle("mirror",m)});const b=document.getElementById("mirrorBtn");if(b){b.classList.toggle("on",m);b.setAttribute("aria-pressed",String(m));b.textContent=m?"⇋ 镜像 开":"⇋ 镜像 关";}}
 let t0=0, firstAt=0, lastAct=0, timer=null;
 let billed=0, pageSpent=0, mode="standard";
 let camOn=false, trying=false;
@@ -386,6 +393,7 @@ function setChips(){
   $("tryBtn").classList.toggle("on", trying);
   $("placeholder").classList.toggle("hide", camOn);
   $("badgeFacing").textContent=facing==="user"?"前置":"后置";
+  applyMirror();
   $("badgeMode").textContent=(document.querySelector("input[name=mode]:checked")||{}).value==="fast"?"快速模式":"标准模式";
 }
 
@@ -453,6 +461,8 @@ $("camBtn").onclick=async()=>{
   }
 };
 
+$("mirrorBtn").onclick=()=>{const p=mirrorPrefs();p[facing]=!isMirrored();localStorage.setItem(LS_MIRROR,JSON.stringify(p));applyMirror();};
+applyMirror();
 $("flipBtn").onclick=async()=>{
   facing=facing==="user"?"environment":"user";
   setChips();
