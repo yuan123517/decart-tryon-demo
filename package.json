@@ -1,0 +1,11 @@
+{
+  "name": "mirra-fitting-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Responsive browser-based Decart virtual fitting studio",
+  "scripts": {
+    "start": "python3 -m http.server 8765 --bind 127.0.0.1",
+    "test": "node tests/browser.test.cjs"
+  },
+  "devDependencies": {"playwright": "1.62.1"}
+}

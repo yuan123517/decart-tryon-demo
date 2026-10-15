@@ -1,0 +1,140 @@
+{
+  "testedAt": "2026-10-15T05:56:10.391Z",
+  "browser": "Google Chrome headless",
+  "results": [
+    {
+      "name": "real SDK loads with six supplied assets",
+      "status": "passed"
+    },
+    {
+      "name": "responsive 320×740",
+      "status": "passed"
+    },
+    {
+      "name": "responsive 375×812",
+      "status": "passed"
+    },
+    {
+      "name": "responsive 390×844",
+      "status": "passed"
+    },
+    {
+      "name": "responsive 768×1024",
+      "status": "passed"
+    },
+    {
+      "name": "responsive 1024×768",
+      "status": "passed"
+    },
+    {
+      "name": "responsive 1440×1000",
+      "status": "passed"
+    },
+    {
+      "name": "responsive 844×390",
+      "status": "passed"
+    },
+    {
+      "name": "photo automatically starts a local download",
+      "status": "passed"
+    },
+    {
+      "name": "square screenshot, IndexedDB save and PNG download",
+      "status": "passed"
+    },
+    {
+      "name": "recording automatically starts a local download",
+      "status": "passed"
+    },
+    {
+      "name": "canvas video recording, playable preview and video download",
+      "status": "passed",
+      "detail": "720 × 720 · 0.1 MB · MP4 · 2026/10/15 13:56:02"
+    },
+    {
+      "name": "photo and video persist after reload",
+      "status": "passed"
+    },
+    {
+      "name": "confirmed deletion removes persistent media",
+      "status": "passed"
+    },
+    {
+      "name": "favorites filter and custom image import",
+      "status": "passed"
+    },
+    {
+      "name": "mobile help is accessible",
+      "status": "passed"
+    },
+    {
+      "name": "camera opens and releases tracks",
+      "status": "passed"
+    },
+    {
+      "name": "no browser runtime errors with bundled real SDK",
+      "status": "passed"
+    },
+    {
+      "name": "Key validation and session-only storage by default",
+      "status": "passed"
+    },
+    {
+      "name": "realtime first frame, SDK RTT fields and server billing ticks",
+      "status": "passed"
+    },
+    {
+      "name": "comparison export uses original and remote video pixels",
+      "status": "passed"
+    },
+    {
+      "name": "prompt edits update the live session",
+      "status": "passed"
+    },
+    {
+      "name": "stop disconnects AI while preserving camera preview",
+      "status": "passed"
+    },
+    {
+      "name": "late connection is disposed after cancellation",
+      "status": "passed"
+    },
+    {
+      "name": "model and speed changes reconnect with correct pricing",
+      "status": "passed"
+    },
+    {
+      "name": "background transition stops chargeable session",
+      "status": "passed"
+    },
+    {
+      "name": "reference and prompt changes during connect are applied after connection",
+      "status": "passed"
+    },
+    {
+      "name": "configured session duration limit stops the session",
+      "status": "passed"
+    },
+    {
+      "name": "idle watchdog stops the session after 60 seconds",
+      "status": "passed"
+    },
+    {
+      "name": "connection timeout also disposes late SDK resolution",
+      "status": "passed"
+    },
+    {
+      "name": "opening the gallery stops the active paid session",
+      "status": "passed"
+    },
+    {
+      "name": "no browser runtime errors in connection lifecycle tests",
+      "status": "passed"
+    }
+  ],
+  "notes": [
+    "Camera and recording use a browser test video source.",
+    "Decart generation is mocked; no paid generation was requested.",
+    "Real Key checks were limited to authenticated quota and file-list queries."
+  ]
+}
