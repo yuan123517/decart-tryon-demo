@@ -401,7 +401,18 @@ function showStage(which){
   // which: 'cam' | 'out'
   $("cam").classList.toggle("hidden", which!=="cam");
   $("out").classList.toggle("hidden", which!=="out");
-  if(which==="cam") $("cam").srcObject=stream;
+  if(which==="cam"){ const v=$("cam"); if(v.srcObject!==stream) v.srcObject=stream; if(stream) v.play().catch(()=>{}); }
+}
+let sdkStream=null;
+function liveOk(st){ return st && st.getVideoTracks().some(t=>t.readyState==="live"); }
+async function restorePreview(){
+  if(!camOn) return;
+  if(!liveOk(stream)){
+    log("预览流已结束，重新获取摄像头…");
+    try{ await openCamera(); }catch(e){ log("重新打开摄像头失败："+e.message); }
+    return;
+  }
+  showStage("cam");
 }
 
 async function pick(src){
@@ -502,7 +513,8 @@ async function startTry(){
       }
     };
     if(mode==="fast") opts.speed="fast";
-    rt=await client.realtime.connect(stream, opts);
+    sdkStream=stream.clone();
+    rt=await client.realtime.connect(sdkStream, opts);
     rt.on("connectionChange", s=>log("状态："+s));
     rt.on("generationTick", ({seconds})=>{ billed=seconds; showCost(); });
     rt.on("queuePosition", q=>log("排队中："+JSON.stringify(q)));
@@ -552,6 +564,7 @@ async function stopTry(why){
   if(timer){ clearInterval(timer); timer=null; }
   const r=rt; rt=null;
   if(r) try{ r.disconnect(); }catch(e){}
+  if(sdkStream){ sdkStream.getTracks().forEach(t=>t.stop()); sdkStream=null; }
   if(t0){
     const s=billed||Math.floor((performance.now()-t0)/1000);
     const c=s*rate();
@@ -565,8 +578,8 @@ async function stopTry(why){
   }
   $("out").srcObject=null;
   trying=false;
-  if(camOn) showStage("cam");
   setChips();
+  await restorePreview();
   log("停止换装："+why);
   refreshQuota();
 }
